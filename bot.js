@@ -86,9 +86,38 @@
                 'Your flight boards in 1 hour :)',
                 'What can I help you with?',
                 mainMenu()
-        ]
+            ]
+
+        if (request.text === 'UPGRADE') {
+
+            var opt = {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'ab16_flightline:4Az8vKgMwOjZHU7DsryP5InoJ19pVCa5'
+                }
+            };
 
 
+            return rp.get(`https://xap.ix-io.net/api/v1/airberlin_lab_2016/passengers/2?fields%5Bpassengers%5D=type%2Csalutation%2Cfirst_name%2Clast_name%2Cp_id%2Cdate_of_birth`, opt)
+                    .then(response => {
+                    const USER = JSON.parse(response.body)
+                    return new fbTemplate.Receipt(USER.passenger.salutation + ' ' + USER.passenger.first_name, '1479020289', 'USD', 'Visa 2345')
+                        .addTimestamp(new Date(1428444852))
+                        .addItem('Upgrade to Business Class')
+                        .addSubtitle('Get double the points')
+                        .addQuantity(1)
+                        .addPrice(635)
+                        .addCurrency('USD')
+                        .addShippingAddress('1 Hacker Way', '', 'Menlo Park', '94025', 'CA', 'US')
+                        .addSubtotal(535.00)
+                        .addTax(60.19)
+                        .addTotal(595.19)
+                        .get();
+
+        })
+
+
+        }
 
         if (request.text === 'MAIN_MENU')
             return mainMenu()
@@ -100,7 +129,7 @@
             return airportMenu()
 
 
-        if (request.text === 'SEAT')
+        if (request.text === 'SEAT') {
 
 
             var options = {
@@ -109,7 +138,6 @@
                     'Authorization': 'ab16_flightline:4Az8vKgMwOjZHU7DsryP5InoJ19pVCa5'
                 }
             };
-
 
 
             return rp.get(`https://xap.ix-io.net/api/v1/airberlin_lab_2016/bookings/1?fields%5Bbookings%5D=passengers%2Ccredit_card%2Ccustomer_address%2Cbooking_number%2Cflight_segments%2Cb_id`, options)
@@ -122,7 +150,8 @@
 
                     ]
                 }
-            )
+        )
+        }
 
 
 
