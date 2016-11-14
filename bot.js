@@ -23,7 +23,7 @@
             .addButton('Health', 'HEALTH')
             .addButton('Recommendations', 'RECO')
             .addButton('Promotions', 'SALE')
-            .get();
+            .get()
     }
 
     function mainMenu() {
@@ -35,7 +35,16 @@
             .addBubble('Your Experience', 'Do what you love now')
             .addButton('Airport Info', 'AIRPORT')
             .addButton('Flight Info', 'FLIGHT')
-            .get();
+            .get()
+    }
+
+    function seatChange() {
+        return new fbTemplate.generic()
+            .addBubble('Your seat','Easily change your seat')
+            .addButton('Aisle', 'AISLE')
+            .addButton('Window','WINDOW')
+            .addButton('Sit together', "TOGETHER")
+            .get()
     }
 
     function flightinfo() {
@@ -77,8 +86,20 @@
 
         if (request.text === 'NOFLIGHT')
             return [
-               'hello'
+               'sorry about that. I am still learning'
                    ]
+
+        if (request.text ==='RECO')
+            return [
+                'Sorry I am still learning.',
+                'I am still making friends with FLIO.'
+            ]
+
+        if(request.text ==='SALE')
+            return [
+                'Sorry I am still learning.',
+                'I am still making friends with FLIO.'
+            ]
 
 
          if (request.text === 'YESFLIGHT')
@@ -87,6 +108,21 @@
                 'What can I help you with?',
                 mainMenu()
             ]
+
+        if (request.text === 'HUMAN')
+            return [
+                'Good news, there are only 2 people ahead of you.',
+                'I will send you notification when the gate attendant is ready for you :)'
+            ]
+
+
+        if (request.text ==='FLIGHT')
+            return [
+                'Sorry. I am still learning.',
+                "I don't have this knowledge yet"
+            ]
+
+
 
         if (request.text === 'UPGRADE') {
 
@@ -128,6 +164,22 @@
         if (request.text ==='AIRPORT')
             return airportMenu()
 
+        if (request.text ==='WINDOW')
+            return [
+                'Done, your new window seat is',
+                '14C'
+            ]
+
+        if(request.text === 'AISLE')
+            return[
+                'Great, your new aisle seat is',
+                '14A'
+            ]
+
+        if(request.text === 'TOGETHER')
+            return[
+                'Sorry, this feature is not currently available'
+            ]
 
         if (request.text === 'SEAT') {
 
@@ -144,9 +196,13 @@
                     .then(response => {
                     const APOD = JSON.parse(response.body)
                     return [
-                        `${APOD.booking.credit_card}`,
-                        `${APOD.booking.booking_number}`,
-                        `${APOD.booking.customer_address}`
+
+                        `"Getting your credit card number: ${APOD.booking.credit_card}`,
+                        `Getting your booking number: ${APOD.booking.booking_number}`,
+                        `Getting your address: ${APOD.booking.customer_address}`,
+                        seatChange()
+
+
 
                     ]
                 }
